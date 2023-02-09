@@ -12,7 +12,16 @@ int main(void){
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     int fd = socket(AF_INET, SOCK_STREAM, 0);
-    connect(fd, (struct sockaddr*)&addr, sizeof addr);
+
+    if (fd == -1){
+        std::cout << "socket() error" << std::endl;
+        return 0;
+    }
+
+    if (connect(fd, (struct sockaddr*)&addr, sizeof addr) == -1){
+        std::cout << "connect() error" << std::endl;
+        return 0;
+    }
 
     while (true){
         char info[100];

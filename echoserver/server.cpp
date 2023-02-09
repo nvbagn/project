@@ -13,10 +13,29 @@ int main(void){
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     int server_fd = socket(AF_INET, SOCK_STREAM, 0);
-    bind(server_fd, (struct sockaddr*)&server_addr, sizeof server_addr);
-    listen(server_fd, 5);
+
+    if (server_fd == -1){
+        std::cout << "socket() error" << std::endl;
+        return 0;
+    }
+
+    if (bind(server_fd, (struct sockaddr*)&server_addr, sizeof server_addr) == -1){
+        std::cout << "bind() error" << std::endl;
+        return 0;
+    }
+
+    if (listen(server_fd, 5)){
+        std::cout << "listen() error" << std::endl;
+        return 0;
+    }
+    
     unsigned int client_addr_len = sizeof client_addr;
     int client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
+
+    if (client_fd == -1){
+        std::cout << "accept() error" << std::endl;
+        return 0;
+    }
 
     while (true){
         char info[100];
