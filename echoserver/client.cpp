@@ -15,12 +15,12 @@ int main(void){
 
     if (fd == -1){
         std::cout << "socket() error" << std::endl;
-        return 0;
+        exit(0);
     }
 
     if (connect(fd, (struct sockaddr*)&addr, sizeof addr) == -1){
         std::cout << "connect() error" << std::endl;
-        return 0;
+        exit(0);
     }
 
     while (true){
