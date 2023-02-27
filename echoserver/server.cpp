@@ -4,10 +4,12 @@
 #include <unistd.h>
 #include <pthread.h>
 
-struct sockaddr_in server_addr, client_addr;
+struct sockaddr_in server_addr;
 int server_fd;
 
 void *func(void *agrs){
+    struct sockaddr_in client_addr;
+    memset(&client_addr, 0, sizeof client_addr);
     unsigned int client_addr_len = sizeof client_addr;
     int client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
 
@@ -35,11 +37,9 @@ void *func(void *agrs){
 
 int main(void){
     memset(&server_addr, 0, sizeof server_addr);
-    memset(&client_addr, 0, sizeof client_addr);
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(atoi("8888"));
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
 
     if (server_fd == -1){
